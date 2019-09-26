@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from './services/websocket.service';
+import { ChatService } from './services/chat.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,10 @@ export class AppComponent implements OnInit {
   
   title = 'cliente-socket-basico';
 
-  constructor( public wsService: WebsocketService) {}
+  constructor( public wsService: WebsocketService,
+    public chatService: ChatService) {}
 
   ngOnInit(): void {
-    throw new Error("Method not implemented.");
+    this.chatService.sendMessage('Hola desde Angular!');
   }
 }
