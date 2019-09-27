@@ -33,9 +33,22 @@ export class WebsocketService {
     });
   }
 
+  /**
+   * Método para emitir cualquier evento
+   * @param evento 
+   * @param payload 
+   * @param callback 
+   */
   emit( evento: string, payload?: any, callback?: Function ) {
-    // emit('EVENTO', payload, callback)
-    console.log('Emitiendo, ', evento);
     this.socket.emit(evento, payload, callback);
   }
+
+  /**
+   * Método para escuchar cualquier evento que emita el servidor
+   * @param evento 
+   */
+  listen( evento: string ) {
+    return this.socket.fromEvent(evento);
+  }
+
 }
