@@ -1,6 +1,15 @@
-# ClienteSocketBasico
+# Cliente Socket Basico (Chat)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3.
+
+Proyecto cliente de sockets.
+
+Bajo la guía del maestro Fernando Herrera como parte del curso https://www.udemy.com/course/angular-aplicaciones-en-tiempo-real
+
+
+Este es su proyecto server: 
+https://github.com/makadown/express-socket-server
+
 
 Instalaciones previas:
 
