@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { Socket } from "ngx-socket-io";
-import { Usuario } from "../classes/usuario";
+import { Injectable } from '@angular/core';
+import { Socket } from 'ngx-socket-io';
+import { Usuario } from '../classes/usuario';
 
 /**
  * Este servicio se encarga de efectuar las conexiones con el servidor de sockets
  */
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class WebsocketService {
   /**
@@ -16,6 +16,7 @@ export class WebsocketService {
   public usuario: Usuario;
 
   constructor(private socket: Socket) {
+    this.cargarStorage();
     this.checkStatus();
   }
 
@@ -27,22 +28,22 @@ export class WebsocketService {
    * connect y el disconnect
    */
   checkStatus() {
-    this.socket.on("connect", () => {
-      console.log("Conectado al servidor");
+    this.socket.on('connect', () => {
+      console.log('Conectado al servidor');
       this.socketStatus = true;
     });
 
-    this.socket.on("disconnect", () => {
-      console.log("Desconectado del servidor");
+    this.socket.on('disconnect', () => {
+      console.log('Desconectado del servidor');
       this.socketStatus = false;
     });
   }
 
   /**
    * Método para emitir cualquier evento
-   * @param evento
-   * @param payload
-   * @param callback
+   * @param evento Nombre de evento
+   * @param payload Payload
+   * @param callback Funcion de retorno
    */
   emit(evento: string, payload?: any, callback?: Function) {
     this.socket.emit(evento, payload, callback);
@@ -50,15 +51,39 @@ export class WebsocketService {
 
   /**
    * Método para escuchar cualquier evento que emita el servidor
-   * @param evento
+   * @param evento Evento
    */
   listen(evento: string) {
     return this.socket.fromEvent(evento);
   }
 
+  /**
+   * Método para loguear al nuevo usuario de chat
+   * @param nombre Nombre de usuario
+   */
   loginWS(nombre: string) {
-    this.emit("configurar-usuario", { nombre }, respuestaDeServidor => {
-      console.log(respuestaDeServidor);
+    return new Promise((resolve, reject) => {
+      this.emit('configurar-usuario', { nombre }, respuestaDeServidor => {
+        this.usuario = new Usuario(nombre);
+        this.guardarStorage();
+        resolve();
+      });
     });
+  }
+
+  /**
+   * Método para guardar en local storage el usuario logueado
+   */
+  guardarStorage() {
+    localStorage.setItem('usuario', JSON.stringify(this.usuario));
+  }
+
+  /**
+   * Método para cargar usuario del storage si existe
+   */
+  cargarStorage() {
+    if (localStorage.getItem('usuario')) {
+      this.usuario = JSON.parse(localStorage.getItem('usuario'));
+    }
   }
 }
