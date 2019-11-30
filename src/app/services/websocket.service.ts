@@ -72,6 +72,14 @@ export class WebsocketService {
   }
 
   /**
+   * Obtengo el usuario logueado.
+   * Regresa null si no existe uno.
+   */
+  getUsuario() {
+    return this.usuario;
+  }
+
+  /**
    * Método para guardar en local storage el usuario logueado
    */
   guardarStorage() {
