@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Usuario } from '../classes/usuario';
+import { Router } from '@angular/router';
 
 /**
  * Este servicio se encarga de efectuar las conexiones con el servidor de sockets
@@ -15,7 +16,7 @@ export class WebsocketService {
   public socketStatus = false;
   public usuario: Usuario;
 
-  constructor(private socket: Socket) {
+  constructor(private socket: Socket, private router: Router) {
     this.cargarStorage();
     this.checkStatus();
   }
@@ -69,6 +70,17 @@ export class WebsocketService {
         this.guardarStorage();
         resolve();
       });
+    });
+  }
+
+  logoutWS() {
+    this.usuario = null;
+    localStorage.removeItem('usuario');
+    const payload = {
+      nombre: 'sin-nombre'
+    };
+    this.emit('configurar-usuario', payload, () => {
+      this.router.navigateByUrl('');
     });
   }
 
