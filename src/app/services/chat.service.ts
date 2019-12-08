@@ -32,4 +32,17 @@ export class ChatService {
   getPrivateMessages() {
     return this.wsService.listen('mensaje-privado');
   }
+
+  getUsuariosActivos() {
+    return this.wsService.listen('usuarios-activos');
+  }
+
+  /**
+   * Esta emisión se hace para pedir una obtención de usuarios
+   * activos. Se usa por ejemplo cuando se loguea o carga por primera vez
+   * un usuario.
+   */
+  emitirUsuariosActivos() {
+    this.wsService.emit('obtener-usuarios');
+  }
 }

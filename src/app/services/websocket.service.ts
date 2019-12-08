@@ -31,6 +31,7 @@ export class WebsocketService {
     this.socket.on('connect', () => {
       console.log('Conectado al servidor');
       this.socketStatus = true;
+      this.cargarStorage();
     });
 
     this.socket.on('disconnect', () => {
@@ -92,6 +93,7 @@ export class WebsocketService {
   cargarStorage() {
     if (localStorage.getItem('usuario')) {
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      // Vuelvo a loguear a socket para no perder nombre de usuario
       this.loginWS(this.usuario.nombre);
     }
   }
